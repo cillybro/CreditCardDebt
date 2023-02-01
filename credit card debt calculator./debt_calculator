@@ -1,0 +1,52 @@
+'''
+This program computes credit card payments
+User inputs the amount that they charged
+Compute the payment for each month & apply that to the balance due
+After - output how long it takes (in years and months) to pay off the credit card
+'''
+MINPAYMENT = 25
+#APR Rate of a credit card is 15.96 15.96% as a decimal is .1596
+APR_RATE = .1596
+RATE = APR_RATE / 12  #monthly rate is 1/12 of the APR Rate
+month = 0
+#get user input
+amount = float(input("Enter amount charged:  "))
+balance = amount  #make a copy of the amount so that you can output the original value
+#Table heading
+#print("Month \t Beginning Balance \t Interest \t Amount Due \t Payment \t Ending Balance")
+print("%6s %17s %15s %10s %15s %20s" %("Month", "Beginning Balance", "Interest", 
+"Amount Due", "Payment", "Ending Balance"))
+#loop continues as long as you have a balance
+while balance > 0:
+  #increase month
+  month += 1
+  #calculate interest
+  interest = balance * RATE
+  #calculate Amount Due
+  amountDue = balance + interest
+  #calculate minPayment (variable name is minPay)
+  minPay = amountDue * 0.03
+  # minimum payment is 3% of your balance or $25, whichever is greater
+  if minPay > MINPAYMENT:
+     payment = minPay   #3% of your amount due
+  else:
+    payment = MINPAYMENT   #or $25 whichever is bigger
+  #your endingBalance is now what?
+  endingBalance = amountDue - payment
+  #What if your last payment is under $25??  We just owe the balance
+  if endingBalance < 0:
+    payment = amountDue
+    endingBalance = 0
+  #print line for that month
+  print("%3d %15.2f %17.2f %10.2f %15.2f %15.2f" % (month, balance, interest, amountDue,
+  payment, endingBalance))
+  balance = endingBalance  #update balance to start next month
+
+
+#calculate number of years and months
+years = month // 12
+month = month % 12
+#output summary of debt
+print("-"*85)
+print("It will take you", years, "years and", month, "months to pay off", end=" ")
+print("$%.2f" %amount)
